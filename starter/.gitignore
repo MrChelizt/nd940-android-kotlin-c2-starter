@@ -83,3 +83,5 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+/app/src/main/res/values/api-keys.xml
+/app/src/main/java/com/udacity/asteroidradar/api/APIKey.kt

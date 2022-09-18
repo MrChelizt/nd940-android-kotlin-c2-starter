@@ -1,11 +1,27 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.database
 
-import android.os.Parcelable
-import com.udacity.asteroidradar.database.DatabaseAsteroid
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.api.PictureOfTheDay
 
-@Parcelize
-data class Asteroid(
+@Entity
+data class DatabasePictureOfTheDay constructor(
+    @PrimaryKey
+    val imageUrl: String,
+    val mediaType: String,
+)
+
+fun DatabasePictureOfTheDay.asDomainModel(): PictureOfTheDay {
+    return PictureOfTheDay(
+        mediaType = mediaType,
+        imageUrl = imageUrl
+    )
+}
+
+@Entity
+data class DatabaseAsteroid constructor(
+    @PrimaryKey
     val id: Long,
     val codename: String,
     val closeApproachDate: String,
@@ -14,11 +30,11 @@ data class Asteroid(
     val relativeVelocity: Double,
     val distanceFromEarth: Double,
     val isPotentiallyHazardous: Boolean
-) : Parcelable
+)
 
-fun List<Asteroid>.asDatabaseModel(): Array<DatabaseAsteroid> {
+fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
     return map {
-        DatabaseAsteroid(
+        Asteroid(
             id = it.id,
             codename = it.codename,
             closeApproachDate = it.closeApproachDate,
@@ -28,5 +44,5 @@ fun List<Asteroid>.asDatabaseModel(): Array<DatabaseAsteroid> {
             distanceFromEarth = it.distanceFromEarth,
             isPotentiallyHazardous = it.isPotentiallyHazardous
         )
-    }.toTypedArray()
+    }
 }
