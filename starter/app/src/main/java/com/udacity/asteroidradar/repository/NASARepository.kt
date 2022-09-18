@@ -29,6 +29,7 @@ class NASARepository(private val database: NASADatabase) {
             var asteroidz = asteroidsResponse.body()?.let {
                 parseAsteroidsJsonResult(JSONObject(it))
             }
+            database.asteroidDao.deleteOldAsteroids()
             if (asteroidz != null && asteroidz.size > 0)
                 database.asteroidDao.insertAll(*asteroidz?.asDatabaseModel())
         }

@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,7 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.NASARepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
@@ -22,8 +24,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            nasaRepository.refreshPictureOfTheDay()
-            nasaRepository.refreshAsteroids()
+            try {
+                nasaRepository.refreshPictureOfTheDay()
+                nasaRepository.refreshAsteroids()
+            } catch (e: Exception) {
+                Timber.e("Error occured when trying to refresh data from NASA: ${e.message}")
+            }
         }
     }
 
