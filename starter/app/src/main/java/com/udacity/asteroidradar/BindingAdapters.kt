@@ -12,8 +12,10 @@ import com.udacity.asteroidradar.main.ListViewAdapter
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -21,8 +23,10 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -44,13 +48,33 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imageUrl: String?) {
-    imageUrl?.let {
-        val imageUri = imageUrl.toUri().buildUpon().scheme("https").build()
-        Picasso.with(imgView.context)
-            .load(imageUri)
-            .placeholder(R.drawable.placeholder_picture_of_day).into(imgView)
+@BindingAdapter("pictureOfTheDay")
+fun bindImage(imgView: ImageView, pictureOfDay: PictureOfTheDay?) {
+    pictureOfDay?.let {
+        if (it.mediaType == "image"){
+            val imageUri = pictureOfDay.imageUrl.toUri().buildUpon().scheme("https").build()
+            Picasso.with(imgView.context)
+                .load(imageUri)
+                .placeholder(R.drawable.placeholder_picture_of_day).into(imgView)
+            imgView.contentDescription = pictureOfDay.title
+        }
+        else{
+            imgView.setImageResource(R.drawable.ic_broken_image)
+            imgView.contentDescription = imgView.context.getString(R.string.image_of_the_day_not_found)
+        }
+    }
+}
+
+@BindingAdapter("pictureOfTheDayTitle")
+fun bindTitle(textView: TextView, pictureOfDay: PictureOfTheDay?){
+    pictureOfDay?.let {
+        if (it.mediaType == "image") {
+            textView.text = pictureOfDay.title
+            textView.contentDescription = pictureOfDay.title
+        } else {
+            textView.text = textView.context.getString(R.string.image_of_the_day_not_found)
+            textView.contentDescription = textView.context.getString(R.string.image_of_the_day_not_found)
+        }
     }
 }
 

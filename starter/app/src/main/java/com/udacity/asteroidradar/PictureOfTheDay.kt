@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.api
+package com.udacity.asteroidradar
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
@@ -10,6 +10,7 @@ data class PictureOfTheDay(
     val mediaType: String,
     @Json(name = "url")
     val imageUrl: String,
+    val title: String
 ) : Parcelable {
     val isImage
         get() = mediaType == "image"

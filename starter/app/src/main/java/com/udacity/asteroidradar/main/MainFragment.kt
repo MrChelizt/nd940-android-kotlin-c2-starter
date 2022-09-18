@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.api.PictureOfTheDay
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.databinding.ListViewItemBinding
 
@@ -58,6 +57,10 @@ class MainFragment : Fragment() {
             }
         })
 
+//        viewModel.asteroids.observe(viewLifecycleOwner, Observer {
+//            viewModelAdapter?.submitList(it)
+//        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -69,6 +72,11 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(when(item.itemId) {
+            R.id.show_today_menu -> AsteroidFilter.TODAY
+            R.id.show_week_menu -> AsteroidFilter.WEEK
+            else -> AsteroidFilter.SAVED
+        })
         return true
     }
 }

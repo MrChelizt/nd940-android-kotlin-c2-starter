@@ -11,11 +11,13 @@ data class NetworkPictureOfTheDay(
     val mediaType: String,
     @Json(name = "url")
     val imageUrl: String,
+    val title: String
 )
 
 fun NetworkPictureOfTheDay.asDatabaseModel(): DatabasePictureOfTheDay {
     return DatabasePictureOfTheDay(
         mediaType = mediaType,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        title = title
     )
 }

@@ -9,11 +9,14 @@ interface AsteroidDao {
     @Query("SELECT * FROM DatabaseAsteroid")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 
+    @Query("SELECT * FROM DatabaseAsteroid WHERE closeApproachDate = :today")
+    fun getTodaysAsteroids(today: String): LiveData<List<DatabaseAsteroid>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroid: DatabaseAsteroid)
 
-    @Query("DELETE FROM DatabaseAsteroid WHERE date(closeApproachDate) < date('now')")
-    fun deleteOldAsteroids()
+    @Query("DELETE FROM DatabaseAsteroid WHERE date(closeApproachDate) < date(:today)")
+    fun deleteOldAsteroids(today: String)
 }
 
 @Dao
@@ -43,3 +46,5 @@ fun getDatabase(context: Context): NASADatabase {
         return INSTANCE
     }
 }
+
+

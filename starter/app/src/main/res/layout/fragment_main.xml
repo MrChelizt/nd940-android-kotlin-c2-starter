@@ -29,9 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/nasa_picture_of_day_content_description_format"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.pictureOfTheDay.imageUrl}"
+                app:pictureOfTheDay="@{viewModel.pictureOfTheDay}"
                 app:srcCompat="@drawable/placeholder_picture_of_day" />
 
             <TextView
@@ -40,12 +39,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="#55010613"
-                android:contentDescription="@string/image_of_the_day"
                 android:padding="16dp"
-                android:text="@string/image_of_the_day"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:pictureOfTheDayTitle="@{viewModel.pictureOfTheDay}" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
